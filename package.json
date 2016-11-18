@@ -1,0 +1,22 @@
+{
+  "name": "snake-js",
+  "version": "1.0.0",
+  "description": "HTML5/CSS3/JS Snake",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sylcastaing/Snake-js.git"
+  },
+  "keywords": [
+    "snake"
+  ],
+  "author": "sylcastaing",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sylcastaing/Snake-js/issues"
+  },
+  "homepage": "https://github.com/sylcastaing/Snake-js#readme"
+}

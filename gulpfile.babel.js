@@ -11,13 +11,16 @@ var plugins = gulpLoadPlugins();
 const paths = {
   src: {
     folder: './src',
-    js: './src/**/*.js',
+    js: './src/js/*.js',
+    less: './src/less/*.less',
     html: './src/index.html'
   },
   build: {
     folder: './build',
     js: './build/js/',
     jsName: 'snake.js',
+    css: './build/css/',
+    cssName: 'styles.min.css',
     html: './build/index.html'
   },
   dist: {
@@ -36,7 +39,7 @@ gulp.task('dev', cb => {
 });
 
 gulp.task('build', cb => {
-  runSequence(['clean', 'lint'], ['build:html', 'build:js'], 'inject:js', cb);
+  runSequence(['clean', 'lint'], ['build:html', 'build:js', 'build:css'], 'inject', cb);
 });
 
 gulp.task('clean', () => {
@@ -67,6 +70,20 @@ gulp.task('build:js', () => {
     .pipe(gulp.dest(paths.build.js));
 });
 
+gulp.task('build:css', () => {
+  return gulp.src(paths.src.less)
+    .pipe(plugins.recess())
+    .pipe(plugins.recess.reporter())
+    .pipe(plugins.less())
+    .pipe(plugins.concat(paths.build.cssName))
+    .pipe(plugins.minifyCss())
+    .pipe(gulp.dest(paths.build.css));
+});
+
+gulp.task('inject', cb => {
+  runSequence('inject:js', 'inject:css', cb);
+});
+
 gulp.task('inject:js', () => {
   var jsFile = gulp.src(paths.build.js + paths.build.jsName, {
     read: false
@@ -76,6 +93,16 @@ gulp.task('inject:js', () => {
     .pipe(plugins.inject(jsFile, {relative: true}))
     .pipe(gulp.dest(paths.build.folder));
 });
+
+gulp.task('inject:css', () => {
+  var cssFile = gulp.src(paths.build.css + paths.build.cssName, {
+    read: false
+  });
+
+  return gulp.src(paths.build.html)
+    .pipe(plugins.inject(cssFile, {relative: true}))
+    .pipe(gulp.dest(paths.build.folder));
+})
 
 gulp.task('start', () => {
   gulp.src(paths.build.folder)

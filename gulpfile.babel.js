@@ -113,7 +113,7 @@ gulp.task('start', () => {
 });
 
 gulp.task('watch', () => {
-  runSequence(['watch:html', 'watch:js']);
+  runSequence(['watch:html', 'watch:js', 'watch:less']);
 });
 
 gulp.task('watch:js', () => {
@@ -126,6 +126,12 @@ gulp.task('watch:html', () => {
   plugins.watch(paths.src.html, () => {
     runSequence('build:html');
   })
+});
+
+gulp.task('watch:less', () => {
+  plugins.watch(paths.src.less, () => {
+    runSequence('build:css', 'inject:css');
+  });
 });
 
 gulp.task('dist', cb => {

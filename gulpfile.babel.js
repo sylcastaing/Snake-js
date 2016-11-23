@@ -4,6 +4,7 @@ import gulp from 'gulp';
 import gulpLoadPlugins from 'gulp-load-plugins';
 import lazypipe from 'lazypipe';
 import server from 'gulp-server-livereload';
+import runSequence from 'run-sequence';
 
 var plugins = gulpLoadPlugins();
 
@@ -30,6 +31,14 @@ let jsLint = lazypipe()
 
 gulp.task('default', ['dev']);
 
+gulp.task('dev', cb => {
+  runSequence('build', 'start', 'watch', cb);
+});
+
+gulp.task('build', cb => {
+  runSequence(['clean', 'lint'], ['build:html', 'build:js'], 'inject:js', cb);
+});
+
 gulp.task('clean', () => {
   return gulp.src(paths.build.folder, {
     read: false
@@ -39,17 +48,23 @@ gulp.task('clean', () => {
   }));
 });
 
-gulp.task('build', ['clean'], () => {
-  gulp.src(paths.src.js)
+gulp.task('lint', () => {
+  return gulp.src(paths.src.js)
     .pipe(jsLint())
-    .pipe(plugins.concat(paths.build.jsName))
-    .pipe(gulp.dest(paths.build.js));
+});
 
-  gulp.src(paths.src.html)
+gulp.task('build:html', () => {
+  return gulp.src(paths.src.html)
     .pipe(plugins.htmlmin({
       collapseWhitespace: true
     }))
     .pipe(gulp.dest(paths.build.folder));
+});
+
+gulp.task('build:js', () => {
+  return gulp.src(paths.src.js)
+    .pipe(plugins.concat(paths.build.jsName))
+    .pipe(gulp.dest(paths.build.js));
 });
 
 gulp.task('inject:js', () => {
@@ -58,11 +73,11 @@ gulp.task('inject:js', () => {
   });
 
   return gulp.src(paths.build.html)
-    .pipe(plugins.inject(jsFile))
-    .pipe(gulp.dest(paths.build.html));
+    .pipe(plugins.inject(jsFile, {relative: true}))
+    .pipe(gulp.dest(paths.build.folder));
 });
 
-gulp.task('dev', ['build', 'watch'], () => {
+gulp.task('start', () => {
   gulp.src(paths.build.folder)
     .pipe(server({
       livereload: true,
@@ -70,30 +85,27 @@ gulp.task('dev', ['build', 'watch'], () => {
     }));
 });
 
-gulp.task('watch', ['watch:js', 'watch:html']);
+gulp.task('watch', () => {
+  runSequence(['watch:html', 'watch:js']);
+});
 
 gulp.task('watch:js', () => {
   plugins.watch(paths.src.js, () => {
-    gulp.src(paths.src.js)
-      .pipe(jsLint())
-      .pipe(plugins.concat(paths.build.jsName))
-      .pipe(gulp.dest(paths.build.js));
-  })
+    runSequence('lint', 'build:js', 'inject:js');
+  });
 });
 
 gulp.task('watch:html', () => {
-  plugins.watch(paths.src.html)
-    .pipe(plugins.htmlmin({
-      collapseWhitespace: true
-    }))
-    .pipe(gulp.dest(paths.build.folder));
+  plugins.watch(paths.src.html, () => {
+    runSequence('build:html');
+  })
 });
 
-gulp.task('dist-build', () => {
+gulp.task('dist', () => {
 
 });
 
-gulp.task('dist-serv', ['dist-build'], () => {
+gulp.task('js:min', () => {
 
 });
 

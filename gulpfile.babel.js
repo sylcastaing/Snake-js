@@ -24,7 +24,7 @@ const paths = {
     html: './build/index.html'
   },
   dist: {
-
+    folder: './dist/'
   }
 };
 
@@ -128,11 +128,23 @@ gulp.task('watch:html', () => {
   })
 });
 
-gulp.task('dist', () => {
+gulp.task('dist', cb => {
+  runSequence('dist:clean', 'build', 'js:min', cb);
+});
 
+gulp.task('dist:clean', cb => {
+  return gulp.src(paths.dist.folder, {
+    read: false
+  })
+  .pipe(plugins.clean({
+    force: true
+  }));
 });
 
 gulp.task('js:min', () => {
-
+  return gulp.src(paths.build.js + paths.build.jsName)
+    .pipe(plugins.jsmin())
+    .pipe(plugins.rename({suffix: '.min'}))
+    .pipe(gulp.dest(paths.dist.folder));
 });
 

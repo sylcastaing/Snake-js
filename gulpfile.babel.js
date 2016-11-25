@@ -12,6 +12,7 @@ const paths = {
   src: {
     folder: './src',
     js: './src/js/*.js',
+    jsMain: './src/js/main.js',
     less: './src/less/*.less',
     html: './src/index.html'
   },
@@ -65,8 +66,10 @@ gulp.task('build:html', () => {
 });
 
 gulp.task('build:js', () => {
-  return gulp.src(paths.src.js)
-    .pipe(plugins.concat(paths.build.jsName))
+  return gulp.src(paths.src.jsMain)
+    .pipe(plugins.plumber())
+    .pipe(plugins.browserify())
+    .pipe(plugins.rename(paths.build.jsName))
     .pipe(gulp.dest(paths.build.js));
 });
 

@@ -1,4 +1,5 @@
-var snake = require('./snake');
+var Snake = require('./snake');
 
-
-var Snake = snake();
+window.onresize = function() {
+  Snake.resize();
+};

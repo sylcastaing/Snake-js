@@ -72,12 +72,13 @@ gulp.task('build:js', () => {
 
 gulp.task('build:css', () => {
   return gulp.src(paths.src.less)
+    .pipe(plugins.plumber())
     .pipe(plugins.recess())
     .pipe(plugins.recess.reporter())
     .pipe(plugins.less())
     .pipe(plugins.concat(paths.build.cssName))
     .pipe(plugins.minifyCss())
-    .pipe(gulp.dest(paths.build.css));
+    .pipe(gulp.dest(paths.build.css))
 });
 
 gulp.task('inject', cb => {

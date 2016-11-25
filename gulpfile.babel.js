@@ -125,7 +125,7 @@ gulp.task('watch:js', () => {
 
 gulp.task('watch:html', () => {
   plugins.watch(paths.src.html, () => {
-    runSequence('build:html');
+    runSequence('build:html', 'inject');
   })
 });
 

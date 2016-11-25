@@ -1,25 +1,33 @@
+var constants = require('./constants');
+var Part = require('./part');
+
 function Snake() {
+  this.content = [];
 
-  //Const
-  this.SNAKE_DIV = document.getElementById('snake-div');
-  this.SNAKE_CANVAS = document.getElementById('snake');
+  for (var i in constants.snake.content) {
+    this.content.push(new Part(constants.snake.content[i].x, constants.snake.content[i].y));
+  }
+}
 
-  if (this.SNAKE_DIV === undefined || this.SNAKE_CANVAS === undefined) {
-    throw "No Snake Elements found";
+Snake.prototype.contains = function(point) {
+  var i = 0;
+  var contains = false;
+  
+  while (!contains && i < this.content.length) {
+    var snakePoint = this.content[i];
+
+    contains = (snakePoint.x === point.x && snakePoint.y === point);
+
+    i++;
   }
 
-  this.FORM_SIZE = 20;
-
-  this.WIDTH = 30;
-  this.HEIGHT = 20;
-
-  this.resize();
+  return contains;
 };
 
-Snake.prototype.resize = function() {
-  this.WIDTH = Math.floor(this.SNAKE_DIV.clientWidth / this.FORM_SIZE);
-  this.SNAKE_CANVAS.height = this.HEIGHT * this.FORM_SIZE;
-  this.SNAKE_CANVAS.width = this.WIDTH * this.FORM_SIZE;
+Snake.prototype.draw = function(ctx) {
+  for (var i in this.content) {
+    this.content[i].draw(ctx);
+  }
 };
 
-module.exports = new Snake;
+module.exports = Snake;

@@ -1,5 +1,7 @@
-var Snake = require('./snake');
+var Canvas = require('./canvas');
+
+var canvas = new Canvas();
 
 window.onresize = function() {
-  Snake.resize();
+  canvas.resize();
 };

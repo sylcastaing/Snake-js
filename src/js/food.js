@@ -1,8 +1,17 @@
 var constants = require('./constants');
 
+/**
+ * Constructor
+ * 
+ * @param {any} ctx
+ */
 function Food(ctx) {
+
+  // Generate Coords on canvas
   this.x = Math.floor(Math.random() * constants.canvas.width);
   this.y = Math.floor(Math.random() * constants.canvas.height);
+
+  // Ctx of canvas
   this.ctx = ctx;
 }
 
@@ -20,6 +29,9 @@ Food.prototype.draw = function() {
   this.ctx.closePath();
 };
 
+/**
+ * Clear the food from canvas
+ */
 Food.prototype.clear = function() {
   this.ctx.beginPath();
   this.ctx.fillStyle = constants.canvas.color;
@@ -45,6 +57,9 @@ Food.prototype.getYToResolution = function() {
   return this.y * constants.canvas.resolution;
 };
 
+/**
+ * Return true if the food is out of canvas
+ */
 Food.prototype.isOutOfCanvas = function() {
   return this.x >= constants.canvas.width;
 };

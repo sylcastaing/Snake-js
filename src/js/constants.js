@@ -4,19 +4,20 @@ module.exports = {
     width: 30,
     height: 20,
     resolution: 20,
-    radius: 9
+    radius: 9,
+    color: '#fff'
   },
 
   snake: {
     content: [
       {
-        x: 1,
+        x: 3,
         y: 1
       }, {
         x: 2,
         y: 1
       }, {
-        x: 3,
+        x: 1,
         y: 1
       }
     ],
@@ -26,5 +27,9 @@ module.exports = {
 
   food: {
     color: '#D23D46'
+  },
+
+  animations: {
+    speed: 200
   }
 };

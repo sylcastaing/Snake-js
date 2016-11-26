@@ -38,7 +38,7 @@ Snake.prototype.contains = function(point) {
   while (!contains && i < this.content.length) {
     var part = this.content[i];
 
-    contains = (part.x === point.x && part.y === point);
+    contains = (part.x === point.x && part.y === point.y);
 
     i++;
   }

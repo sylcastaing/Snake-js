@@ -25,7 +25,10 @@ const paths = {
     html: './build/index.html'
   },
   dist: {
-    folder: './dist/'
+    folder: './dist/',
+    html: './dist/index.html',
+    js: './dist/snake.min.js',
+    css: './dist/styles.min.css'
   }
 };
 
@@ -139,7 +142,11 @@ gulp.task('watch:less', () => {
 });
 
 gulp.task('dist', cb => {
-  runSequence('dist:clean', 'build', 'js:min', cb);
+  runSequence('dist:clean', 'build', 'dist:js', 'dist:copy', 'dist:inject', cb);
+});
+
+gulp.task('dist:test', cb => {
+  runSequence('dist:inject', 'dist:serv', cb);
 });
 
 gulp.task('dist:clean', cb => {
@@ -151,10 +158,59 @@ gulp.task('dist:clean', cb => {
   }));
 });
 
-gulp.task('js:min', () => {
+gulp.task('dist:copy', cb => {
+  runSequence(['dist:copy:html', 'dist:copy:css'], cb);
+});
+
+gulp.task('dist:copy:html', () => {
+  gulp.src(paths.build.html)
+    .pipe(gulp.dest(paths.dist.folder));
+});
+
+gulp.task('dist:copy:css', () => {
+  gulp.src(paths.build.css + paths.build.cssName)
+    .pipe(gulp.dest(paths.dist.folder));
+});
+
+gulp.task('dist:inject', cb => {
+  runSequence('dist:inject:css', 'dist:inject:js', cb);
+});
+
+gulp.task('dist:inject:css', () => {
+  
+  var cssFile = gulp.src(paths.dist.css, {
+    read: false
+  });
+
+  return gulp.src(paths.dist.html)
+    .pipe(plugins.plumber())
+    .pipe(plugins.inject(cssFile, {relative: true}))
+    .pipe(gulp.dest(paths.dist.folder));
+});
+
+gulp.task('dist:inject:js', () => {
+  var jsFile = gulp.src(paths.dist.js, {
+    read: false
+  });
+
+  return gulp.src(paths.dist.html)
+    .pipe(plugins.inject(jsFile, {relative: true}))
+    .pipe(gulp.dest(paths.dist.folder));
+});
+
+gulp.task('dist:js', () => {
   return gulp.src(paths.build.js + paths.build.jsName)
-    .pipe(plugins.jsmin())
+    .pipe(plugins.plumber())
+    .pipe(plugins.uglify())
     .pipe(plugins.rename({suffix: '.min'}))
     .pipe(gulp.dest(paths.dist.folder));
+});
+
+gulp.task('dist:serv', () => {
+  gulp.src(paths.dist.folder)
+    .pipe(server({
+      livereload: false,
+      open: true
+    }));
 });
 

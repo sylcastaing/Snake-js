@@ -1,5 +1,6 @@
 var constants = require('./constants');
 var Snake = require('./snake');
+var Score = require('./menu/score');
 
 function Canvas() {
 
@@ -11,11 +12,13 @@ function Canvas() {
     throw "No Snake Elements found";
   }
 
+  this.score = new Score(this.div);
+
   // Get the context of canvas
   this.ctx = this.canvas.getContext('2d');
 
   // Create new snake
-  this.snake = new Snake(this.ctx);
+  this.snake = new Snake(this.ctx, this.score);
 
   // Initialize canvas
   this.init();

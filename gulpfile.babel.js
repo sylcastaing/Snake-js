@@ -11,7 +11,7 @@ var plugins = gulpLoadPlugins();
 const paths = {
   src: {
     folder: './src',
-    js: './src/js/*.js',
+    js: './src/js/**/*.js',
     jsMain: './src/js/main.js',
     less: './src/less/*.less',
     html: './src/index.html'

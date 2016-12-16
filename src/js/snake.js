@@ -7,13 +7,15 @@ var Food = require('./food');
  * 
  * @param {any} ctx
  */
-function Snake(ctx) {
+function Snake(ctx, score) {
 
   // Array of snake parts
   this.content = [];
 
   // Canvas context
   this.ctx = ctx;
+
+  this.score = score;
 
   // Horizontal and vertical direction of the snake
   this.dx = 1;
@@ -80,6 +82,7 @@ Snake.prototype.move = function() {
     tail.clear();
   }
   else {
+    this.score.increment();
     this.food.clear();
     this.generateFood();
     this.food.draw();

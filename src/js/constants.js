@@ -31,5 +31,9 @@ module.exports = {
 
   animations: {
     speed: 200
+  },
+
+  storage: {
+    key: 'snakeRecord'
   }
 };

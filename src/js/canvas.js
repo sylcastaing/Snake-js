@@ -22,6 +22,8 @@ function Canvas() {
 
   // Initialize canvas
   this.init();
+
+  this.snake.draw();
 }
 
 /**
@@ -36,10 +38,6 @@ Canvas.prototype.init = function() {
 
   // Set the backgroundColor
   this.canvas.style.backgroundColor = constants.canvas.color;
-
-  // Draw the snake and start animation
-  this.snake.draw();
-  this.animate();
 };
 
 /**

@@ -28,6 +28,8 @@ function Snake(ctx, score) {
 
   // Generation of the food on init
   this.generateFood();
+
+  this.animate();
 }
 
 /**
@@ -67,6 +69,14 @@ Snake.prototype.draw = function() {
   this.food.draw();
 };
 
+Snake.prototype.animate = function() {
+  var snake = this;
+
+  this.loop = setInterval(function() {
+    snake.move();
+  }, constants.animations.speed);
+};
+
 /**
  * Move the snake
  */
@@ -76,10 +86,19 @@ Snake.prototype.move = function() {
   var newHead = new Part((this.content[0].x + this.dx + constants.canvas.width) % constants.canvas.width,
       (this.content[0].y + this.dy + constants.canvas.height) % constants.canvas.height,
       this.ctx);
-
+  
+  // If newHead is not on food
   if (!newHead.isOnFood(this.food)) {
-    var tail = this.content.pop();
-    tail.clear();
+
+    // Stop animation if newHead is on snake
+    if (this.contains(newHead)) {
+      clearInterval(this.loop);
+    }
+    // Move
+    else {
+      var tail = this.content.pop();
+      tail.clear();
+    }
   }
   else {
     this.score.increment();

@@ -1,6 +1,7 @@
 var constants = require('./constants');
 var Snake = require('./snake');
 var Score = require('./menu/score');
+var Button = require('./menu/button');
 
 function Canvas() {
 
@@ -19,6 +20,8 @@ function Canvas() {
 
   // Create new snake
   this.snake = new Snake(this.ctx, this.score);
+
+  this.button = new Button(this.snake, this.div);
 
   // Initialize canvas
   this.init();

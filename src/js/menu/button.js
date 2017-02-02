@@ -14,8 +14,13 @@ Button.prototype.init = function() {
   button.style.right = '0';
   button.style.marginLeft = 'auto';
   button.style.marginRight = 'auto';
+  button.style.marginTop = '-34px';
   button.style.width = '100px';
   button.style.height = '100px';
+  button.style.border = '1px solid #ddd';
+  button.style.borderRadius = '2px';
+  button.style.cursor = 'pointer';
+
 
   this.div.appendChild(button);
 };

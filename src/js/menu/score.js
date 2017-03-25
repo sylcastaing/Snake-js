@@ -61,4 +61,12 @@ Score.prototype.change = function() {
   document.getElementById('record-value').innerHTML = this.Record.value;
 };
 
+/**
+ * Reset the score to 0
+ */
+Score.prototype.reset = function() {
+  this.score = 0;
+  this.change();
+};
+
 module.exports = Score;

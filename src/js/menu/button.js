@@ -1,28 +1,49 @@
 function Button(snake, div) {
+  this.snake = snake;
   this.div = div;
 
+  this.button = null;
+
   this.init();
+
+  this.snake.setButton(this);
 }
 
+/**
+ * Init the button
+ */
 Button.prototype.init = function() {
-  var button = document.createElement('div');
-  button.className = 'button';
+  this.button = document.createElement('div');
+  this.button.className = 'button';
 
-  button.style.position = 'absolute';
-  button.style.top = '50%';
-  button.style.left = '0';
-  button.style.right = '0';
-  button.style.marginLeft = 'auto';
-  button.style.marginRight = 'auto';
-  button.style.marginTop = '-34px';
-  button.style.width = '100px';
-  button.style.height = '100px';
-  button.style.border = '1px solid #ddd';
-  button.style.borderRadius = '2px';
-  button.style.cursor = 'pointer';
+  this.button.style.position = 'absolute';
+  this.button.style.top = '50%';
+  this.button.style.left = '0';
+  this.button.style.right = '0';
+  this.button.style.marginLeft = 'auto';
+  this.button.style.marginRight = 'auto';
+  this.button.style.marginTop = '-34px';
+  this.button.style.width = '100px';
+  this.button.style.height = '100px';
+  this.button.style.backgroundColor = '#fff';
+  this.button.style.border = '1px solid #ddd';
+  this.button.style.borderRadius = '2px';
+  this.button.style.cursor = 'pointer';
 
+  var snake = this.snake;
+  this.button.onclick = function() {
+    this.style.display = 'none';
+    snake.init();
+  };
 
-  this.div.appendChild(button);
+  this.div.appendChild(this.button);
+};
+
+/**
+ * Show the button after die
+ */
+Button.prototype.show = function() {
+  this.button.style.display = 'block';
 };
 
 module.exports = Button;

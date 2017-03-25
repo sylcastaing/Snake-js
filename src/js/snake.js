@@ -7,20 +7,29 @@ var Food = require('./food');
  * 
  * @param {any} ctx
  */
-function Snake(ctx, score) {
+function Snake(canvas, ctx, score) {
 
   // Array of snake parts
   this.content = [];
 
   // Canvas context
+  this.canvas = canvas;
   this.ctx = ctx;
 
   this.score = score;
+  this.button = null;
+}
+
+Snake.prototype.init = function() {
+  this.canvas.clear();
 
   // Horizontal and vertical direction of the snake
   this.dx = 1;
   this.dy = 0;
 
+  this.score.reset();
+
+  this.content = [];
   // Init the snake content
   for (var i in constants.snake.content) {
     this.content.push(new Part(constants.snake.content[i].x, constants.snake.content[i].y, this.ctx));
@@ -29,8 +38,11 @@ function Snake(ctx, score) {
   // Generation of the food on init
   this.generateFood();
 
+  this.draw();
+
+  // Start animation
   this.animate();
-}
+};
 
 /**
  * Return true is the point isContains on the snake
@@ -93,6 +105,7 @@ Snake.prototype.move = function() {
     // Stop animation if newHead is on snake
     if (this.contains(newHead)) {
       clearInterval(this.loop);
+      this.button.show();
     }
     // Move
     else {
@@ -157,6 +170,13 @@ Snake.prototype.moveLeft = function() {
 Snake.prototype.moveRight = function() {
   this.dx = 1;
   this.dy = 0;
+};
+
+/**
+ * setButton
+ */
+Snake.prototype.setButton = function(button) {
+  this.button = button;
 };
 
 module.exports = Snake;

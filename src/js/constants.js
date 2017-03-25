@@ -30,7 +30,7 @@ module.exports = {
   },
 
   animations: {
-    speed: 200
+    speed: 150
   },
 
   storage: {

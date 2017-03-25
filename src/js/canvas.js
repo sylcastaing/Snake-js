@@ -1,6 +1,7 @@
 var constants = require('./constants');
 var Snake = require('./snake');
 var Score = require('./menu/score');
+var Button = require('./menu/button');
 
 function Canvas() {
 
@@ -18,7 +19,9 @@ function Canvas() {
   this.ctx = this.canvas.getContext('2d');
 
   // Create new snake
-  this.snake = new Snake(this.ctx, this.score);
+  this.snake = new Snake(this, this.ctx, this.score);
+
+  this.button = new Button(this.snake, this.div);
 
   // Initialize canvas
   this.init();
@@ -36,10 +39,6 @@ Canvas.prototype.init = function() {
 
   // Set the backgroundColor
   this.canvas.style.backgroundColor = constants.canvas.color;
-
-  // Draw the snake and start animation
-  this.snake.draw();
-  this.animate();
 };
 
 /**
@@ -56,14 +55,10 @@ Canvas.prototype.resize = function() {
 };
 
 /**
- * Animate the snake
+ * Clear the canvas
  */
-Canvas.prototype.animate = function() {
-  var snake = this.snake;
-
-  var loop = setInterval(function() {
-    snake.move();
-  }, constants.animations.speed);
+Canvas.prototype.clear = function() {
+  this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
 };
 
 module.exports = Canvas;

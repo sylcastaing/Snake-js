@@ -21,14 +21,14 @@ const paths = {
     js: './build/js/',
     jsName: 'snake.js',
     css: './build/css/',
-    cssName: 'styles.min.css',
+    cssName: 'snake.min.css',
     html: './build/index.html'
   },
   dist: {
     folder: './dist/',
     html: './dist/index.html',
     js: './dist/snake.min.js',
-    css: './dist/styles.min.css'
+    css: './dist/snake.min.css'
   }
 };
 

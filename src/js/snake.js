@@ -1,6 +1,7 @@
 var constants = require('./constants');
 var Part = require('./part');
 var Food = require('./food');
+var Swipe = require('./swipe');
 
 /**
  * Constructor
@@ -18,6 +19,8 @@ function Snake(canvas, ctx, score) {
 
   this.score = score;
   this.button = null;
+
+  this.swipe = new Swipe(this.canvas, this);
 }
 
 Snake.prototype.init = function() {
